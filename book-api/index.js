@@ -18,3 +18,26 @@ let books = [
     numOfPages: 123
   }
 ]
+
+app.get('/books', (req, res) => {
+  res.json(books)
+})
+
+app.post('/books', (req, res) => {
+  const book = req.body
+  books.push(book)
+  res.status(201).json(book)
+})
+
+app.put('/books/:isbn', (req, res) => {
+  const { isbn } = req.params
+  const updatedBook = req.body
+  books = books.map(book => (book.isbn === isbn ? updatedBook : book))
+  res.json(updatedBook)
+})
+
+app.delete('/books/:isbn', (req, res) => {
+  const { isbn } = req.params
+  books = books.filter(book => book.isbn !== isbn)
+  res.status(204).send()
+})
